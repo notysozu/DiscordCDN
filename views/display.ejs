@@ -1,37 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <!-- Primary Meta Tags -->
-    <title>
-        <%= title %>
-    </title>
-    <meta name="title" content="Meta Tags — Preview, Edit and Generate">
-    <meta name="description"
-        content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!">
+  <% const safeTitle = typeof title !== "undefined" && title ? title : "DiscordCDN Preview"; %>
+  <% const safeDescription = typeof description !== "undefined" && description ? description : "Previewing hosted content before redirect."; %>
+  <% const safeImageDirectLink = typeof imageDirectLink !== "undefined" && imageDirectLink ? imageDirectLink : ""; %>
+  <% const safeAppLink = typeof app_link !== "undefined" && app_link ? app_link : "/"; %>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= safeTitle %></title>
+  <meta name="title" content="<%= safeTitle %>">
+  <meta name="description" content="<%= safeDescription %>">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<%= imageDirectLink %>">
-    <meta property="og:title" content="<%= title %>">
-    <meta property="og:description" content="<%= description %>">
-    <meta property="og:image" content="<%= imageDirectLink %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= safeImageDirectLink %>">
+  <meta property="og:title" content="<%= safeTitle %>">
+  <meta property="og:description" content="<%= safeDescription %>">
+  <meta property="og:image" content="<%= safeImageDirectLink %>">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<%= imageDirectLink %>">
-    <meta property="twitter:title" content="<%= title %>">
-    <meta property="twitter:description" content="<%= description %>">
-    <meta property="twitter:image" content="<%= imageDirectLink %>">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= safeImageDirectLink %>">
+  <meta property="twitter:title" content="<%= safeTitle %>">
+  <meta property="twitter:description" content="<%= safeDescription %>">
+  <meta property="twitter:image" content="<%= safeImageDirectLink %>">
 
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 
-<body>
-    <script>
-        window.location.replace(`<%= app_link %>`);
+<body class="theme-dark">
+  <div class="site-shell site-shell-compact">
+    <div class="bg-orb bg-orb-one" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-two" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
 
-    </script>
+    <main class="page-main page-center">
+      <section class="section redirect-section">
+        <div class="container">
+          <div class="glass-panel redirect-card reveal">
+            <span class="eyebrow">Preparing Preview</span>
+            <h1><%= safeTitle %></h1>
+            <p><%= safeDescription %></p>
+
+            <div class="discord-preview discord-preview-large">
+              <div class="discord-bar"></div>
+              <div class="discord-content">
+                <strong>Redirecting to the hosted file</strong>
+                <p>You’ll be forwarded automatically. If not, use the direct link below.</p>
+                <% if (safeImageDirectLink) { %>
+                  <img src="<%= safeImageDirectLink %>" alt="Hosted asset preview" class="result-image-preview">
+                <% } else { %>
+                  <div class="file-placeholder">
+                    <i class="bi bi-hourglass-split"></i>
+                    <span>Loading preview</span>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+
+            <div class="hero-actions hero-actions-center">
+              <a class="button button-primary" href="<%= safeAppLink %>">Return Home</a>
+              <a class="button button-secondary" href="<%= safeImageDirectLink %>">Open Direct File</a>
+            </div>
+
+            <div class="loading-line" aria-hidden="true">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    window.setTimeout(function () {
+      window.location.replace("<%= safeAppLink %>");
+    }, 450);
+  </script>
 </body>
 
 </html>
